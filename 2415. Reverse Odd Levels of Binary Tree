@@ -1,0 +1,54 @@
+class Solution {
+private:
+    void preOrder(TreeNode *root1, TreeNode* root2, int l) {
+    if(root1 == NULL) return;
+    
+    if(l%2 == 0) swap(root1->val, root2->val);
+    
+    preOrder(root1->left, root2->right, l+1);
+    preOrder(root1->right, root2->left, l+1);
+}
+public:
+    TreeNode* reverseOddLevels(TreeNode* root) {
+        preOrder(root->left, root->right, 0);
+        return root;
+    }
+};
+oR
+
+class Solution {
+public:
+    TreeNode* reverseOddLevels(TreeNode* root) {
+        queue<TreeNode*>q;
+        vector<int>values;
+        q.push(root);
+        int level=0;
+        while(!q.empty())
+        {
+            int size=q.size();
+            vector<int>temp;
+            for(int i=0;i<size;i++)
+            {
+                TreeNode*node=q.front();
+                q.pop();
+                if(level%2!=0)
+                {
+                    node->val=values[size-i-1];
+                }
+                if(node->left)
+                {
+                    q.push(node->left);
+                    temp.push_back(node->left->val);
+                }
+                if(node->right)
+                {
+                    q.push(node->right);
+                    temp.push_back(node->right->val);
+                }
+            }
+            level++ ;
+            values=temp;
+        }
+        return root;
+    }
+};
